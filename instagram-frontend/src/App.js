@@ -10,7 +10,11 @@ function App() {
             src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png" 
             alt="" />
       </div>
-      <Post />
+      <Post
+          username="tuyenphk"
+          url="https://i.ibb.co/YNyzWWy/cover.jpg"
+          caption="Best scenery moment #canolafields #summervibes #usa #pennsylvania #lehighvalley #northampton #cherryville #covid19 👣👣🌾🌼🥰"
+           />
     </div>
   );
 }
