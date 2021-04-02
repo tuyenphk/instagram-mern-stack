@@ -34,6 +34,7 @@ function App() {
 
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openRegister, setOpenRegister] = useState(false);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -46,14 +47,14 @@ function App() {
         console.log(authUser);
         setUser(authUser);
 
-        if (authUser.displayName){
-          //dont update username
-        } else {
-          //if we just created someone
-          return authUser.updateProfile({
-            displayName: username
-          });
-        }
+        // if (authUser.displayName){
+        //   //dont update username
+        // } else {
+        //   //if we just created someone
+        //   return authUser.updateProfile({
+        //     displayName: username
+        //   });
+        // }
 
       } else {
         //user has logged out
@@ -77,12 +78,28 @@ function App() {
       })
   }, []);
 
-  const signUp = (event) => {
+  const handleRegister = (event) => {
     event.preventDefault();
 
     auth.createUserWithEmailAndPassword(email, password)
+        .then ((authUser) => {
+          return authUser.user.updateProfile({
+            displayName: username
+          })
+        })
         .catch((error) => alert(error.message));
+
+    setOpenRegister(false);
   };
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+
+    auth.signInWithEmailAndPassword(email, password)
+        .catch((error) => alert(error.message));
+
+    setOpen(false);
+  }
 
   return (
     <div className="app">
@@ -106,7 +123,32 @@ function App() {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)} />
-              <Button type="submit" onClick={signUp}>Sign up</Button>
+              <Button type="submit" onClick={handleLogin} className="app-button">Log In</Button>
+          </form>
+        </div>
+      </Modal>
+
+      <Modal
+        open={openRegister}
+        onClose={() => setOpenRegister(false)}
+      >
+        <div style={modalStyle} className={classes.paper}>
+          <form className="app-login">
+            <center>
+              <img 
+                className="app-headerImage" 
+                src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png" 
+                alt="" />
+            </center>
+              <Input placeholder="email"
+                    type="text"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)} />
+              <Input placeholder="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)} />
+              <Button type="submit" onClick={handleRegister} className="app-button">Register</Button>
           </form>
         </div>
       </Modal>
@@ -118,7 +160,15 @@ function App() {
             alt="" />
       </div>
 
-      <Button onClick={() => setOpen(true)}>Sign up</Button>
+      {/* if user is authenticated, button Logout displayed otherwise Sign In/Sign Up button */}
+      {user ? (
+        <Button onClick={() => auth.signOut()}>Logout</Button>
+      ): (
+        <div className="app-loginContainer">
+          <Button onClick={() => setOpen(true)}>LogIn</Button>
+          <Button onClick={() => setOpenRegister(true)}>Register</Button>
+        </div>
+      )}
 
       {
         posts.map (({id, post}) => (
