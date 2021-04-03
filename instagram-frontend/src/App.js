@@ -4,6 +4,7 @@ import {db, auth} from './firebase'
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 import {Button, Input} from '@material-ui/core';
+import ImageUpload from './components/ImageUpload/ImageUpload'
 import './App.css'
 
 function getModalStyle() {
@@ -103,6 +104,9 @@ function App() {
 
   return (
     <div className="app">
+
+      <ImageUpload />
+
       <Modal
         open={open}
         onClose={() => setOpen(false)}
@@ -160,7 +164,7 @@ function App() {
             alt="" />
       </div>
 
-      {/* if user is authenticated, button Logout displayed otherwise Sign In/Sign Up button */}
+      {/* if user is authenticated, button Logout displayed otherwise LogIn/Register button */}
       {user ? (
         <Button onClick={() => auth.signOut()}>Logout</Button>
       ): (
