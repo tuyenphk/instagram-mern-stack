@@ -133,6 +133,12 @@ function App() {
               />
             </center>
             <Input
+              placeholder="username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <Input
               placeholder="email"
               type="text"
               value={email}
@@ -187,18 +193,18 @@ function App() {
           </FlipMove>
         </div>
         <div className="app__postsRight">
-          <InstagramEmbed
-            url="https://www.instagram.com/p/B_uf9dmAGPw/"
-            maxWidth={320}
-            hideCaption={false}
-            containerTagName="div"
-            protocol=""
-            injectScript
-            onLoading={() => {}}
-            onSuccess={() => {}}
-            onAfterRender={() => {}}
-            onFailure={() => {}}
-          />
+        <InstagramEmbed
+              url="https://www.instagram.com/p/CAMOVpGJ9D5Os0EDyl7F6Bf4RnL7hcNgqyjG6I0/"
+              maxWidth={320}
+              hideCaption={false}
+              containerTagName='div'
+              protocol=''
+              injectScript
+              onLoading={() => {}}
+              onSuccess={() => {}}  
+              onAfterRender={() => {}}
+              onFailure={() => {}}
+            />
         </div>
       </div>
 
