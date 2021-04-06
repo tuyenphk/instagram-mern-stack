@@ -9,9 +9,9 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 const pusher = new Pusher({
-  appId: "1184197",
-  key: "bdbaa2f5f54901e529ab",
-  secret: "86a0274573278c81d2fd",
+  appId: "*****",
+  key: "*****",
+  secret: "8******",
   cluster: "us2",
   useTLS: true
 });
@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(cors);
 
 //DB config
-const connection_url = 'mongodb+srv://admin:Staystrong@cluster0.3jsw8.mongodb.net/instaDB?retryWrites=true&w=majority'
+const connection_url = 'mongodb+srv://admin:<password>@cluster0.3jsw8.mongodb.net/instaDB?retryWrites=true&w=majority'
 mongoose.connect(connection_url, {
     useCreateIndex: true,
     useNewUrlParser: true,
