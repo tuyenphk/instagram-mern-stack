@@ -2,18 +2,26 @@ import express from 'express'
 import cors from 'cors'
 import mongoose from 'mongoose'
 import pusher from 'pusher'
-import dbModel from './dbModel'
+import dbModel from './dbModel.js'
 
 //app config
 const app = express();
 const port = process.env.PORT || 8080;
+
+const pusher = new Pusher({
+  appId: "1184197",
+  key: "bdbaa2f5f54901e529ab",
+  secret: "86a0274573278c81d2fd",
+  cluster: "us2",
+  useTLS: true
+});
 
 //middleware
 app.use(express.json());
 app.use(cors);
 
 //DB config
-const connection_url = 'mongodb+srv://admin:BTxvtCDRqA7VshMX@cluster0.3jsw8.mongodb.net/instaDB?retryWrites=true&w=majority'
+const connection_url = 'mongodb+srv://admin:Staystrong@cluster0.3jsw8.mongodb.net/instaDB?retryWrites=true&w=majority'
 mongoose.connect(connection_url, {
     useCreateIndex: true,
     useNewUrlParser: true,
@@ -22,6 +30,25 @@ mongoose.connect(connection_url, {
 
 mongoose.connection.once('open', () => {
     console.log('DB connected')
+    const changeStream = mongoose.connection.collection('posts').watch()
+    changeStream.on('change', (change) => {
+        console.log('Change Triggered on pusher..')
+        console.log(change)
+        console.log('End of change')
+
+        if (change.operationType === 'insert'){
+            console.log('Triggering Pusher')
+
+            const postDetails = change.fullDocument
+            pusher.trigger ('posts', 'inserted', {
+                user: postDetails.user,
+                caption: postDetails.caption,
+                image: postDetails.image
+            })
+        } else {
+            console.log('Error triggering Pusher')
+        }
+    })
 })
 
 //API route
